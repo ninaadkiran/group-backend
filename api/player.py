@@ -11,8 +11,9 @@ player_api = Blueprint('player_api', __name__,
 api = Api(player_api)
 
 class PlayerAPI:     
-    class Action(Resource):
+    class _CRUD(Resource):
         def post(self):
+            
             ''' Read data for json body '''
             body = request.get_json()
             
@@ -20,32 +21,33 @@ class PlayerAPI:
             # validate name
             name = body.get('name')
             if name is None or len(name) < 2:
+                print("%%%%% name error")
                 return {'message': f'Name is missing, or is less than 2 characters'}, 210
             # validate uid
             uid = body.get('uid')
             if uid is None or len(uid) < 2:
+                print("%%%%% name error")
                 return {'message': f'User ID is missing, or is less than 2 characters'}, 210
             # look for password and tokens
-            password = body.get('password')
             tokens = body.get('tokens')
-
+            print("%%%%% here1"+name)
             ''' #1: Key code block, setup PLAYER OBJECT '''
             po = Player(name=name, 
                         uid=uid,
                         tokens=tokens)
-            
-            ''' Additional garbage error checking '''
-            # set password if provided
-            if password is not None:
-                po.set_password(password)            
-            
+                     
+            print("%%%%% herdsfdse1")
             ''' #2: Key Code block to add user to database '''
             # create player in database
             player = po.create()
             # success returns json of player
+            
+            print(jsonify(player.read()))
+            
             if player:
                 return jsonify(player.read())
             # failure returns error
+            print("%%%%% herdsfdse23")
             return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 210
 
         def get(self):
@@ -70,4 +72,4 @@ class PlayerAPI:
 
 
     # building RESTapi endpoint, method distinguishes action
-    api.add_resource(Action, '/')
+    api.add_resource(_CRUD, '/')

@@ -18,14 +18,12 @@ class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     _name = db.Column(db.String(255), unique=False, nullable=False)
     _uid = db.Column(db.String(255), unique=True, nullable=False)
-    _password = db.Column(db.String(255), unique=False, nullable=False)
     _tokens = db.Column(db.Integer)    
 
     # constructor of a Player object, initializes the instance variables within object (self)
-    def __init__(self, name, uid, tokens, password="123qwerty"):
+    def __init__(self, name, uid, tokens):
         self._name = name    # variables with self prefix become part of the object, 
         self._uid = uid
-        self.set_password(password)
         self._tokens = tokens
 
     # a name getter method, extracts name from object
@@ -52,20 +50,6 @@ class Player(db.Model):
     def is_uid(self, uid):
         return self._uid == uid
     
-    @property
-    def password(self):
-        return self._password[0:10] + "..." # because of security only show 1st characters
-
-    # update password, this is conventional setter
-    def set_password(self, password):
-        """Create a hashed password."""
-        self._password = generate_password_hash(password, "pbkdf2:sha256", salt_length=10)
-        
-    # check password parameter versus stored/encrypted password
-    def is_password(self, password):
-        """Check against hashed password."""
-        result = check_password_hash(self._password, password)
-        return result
     
     # dob property is returned as string, to avoid unfriendly outcomes
     @property
@@ -99,11 +83,9 @@ class Player(db.Model):
     # returns dictionary
     def read(self):
         return {
-            "id": self.id,
             "name": self.name,
             "uid": self.uid,
-            "tokens": self.tokens,
-            "password": self._password
+            "tokens": self.tokens
         }
 
     # CRUD update: updates name, uid, password, tokens
@@ -115,8 +97,6 @@ class Player(db.Model):
                 self.name = dictionary[key]
             if key == "uid":
                 self.uid = dictionary[key]
-            if key == "password":
-                self.set_password(dictionary[key])
             if key == "tokens":
                 self.tokens = dictionary[key]
         db.session.commit()
