@@ -37,6 +37,11 @@ def page_not_found(e):
 def index():
     return render_template("index.html")
 
+
+@app.route('/api/players', methods=['OPTIONS'])
+def options():
+    return '', 204
+
 @app.route('/table/')  # connects /stub/ URL to stub() function
 def table():
     return render_template("table.html")
@@ -45,7 +50,7 @@ def table():
 def before_request():
     # Check if the request came from a specific origin
     allowed_origin = request.headers.get('Origin')
-    if allowed_origin in ['http://localhost:4200', 'http://127.0.0.1:4200', "https://rayyandarugar.github.io"]:
+    if allowed_origin in ['http://localhost:4700', 'http://127.0.0.1:4700','http://localhost:4200', 'http://127.0.0.1:4200', "https://rayyandarugar.github.io"]:
         cors._origins = allowed_origin
 
 # Create an AppGroup for custom commands
