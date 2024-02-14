@@ -51,7 +51,7 @@ class PlayerAPI:
             return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 210
 
         def get(self):
-            players = Player.query.all()    # read/extract all players from database
+            players = Player.query.order_by(Player._tokens.desc()).all()    # read/extract all players from database
             json_ready = [player.read() for player in players]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
 

@@ -17,7 +17,7 @@ class Player(db.Model):
     # Define the Player schema with "vars" from object
     id = db.Column(db.Integer, primary_key=True)
     _name = db.Column(db.String(255), unique=False, nullable=False)
-    _uid = db.Column(db.String(255), unique=True, nullable=False)
+    _uid = db.Column(db.String(255), unique=False, nullable=False)
     _tokens = db.Column(db.Integer)    
 
     # constructor of a Player object, initializes the instance variables within object (self)
@@ -121,11 +121,8 @@ def initPlayers():
         db.create_all()
         """Tester records for table"""
         players = [
-            Player(name='Azeem Khan', uid='azeemK', tokens=45),
-            Player(name='Ahad Biabani', uid='ahadB', tokens=41),
-            Player(name='Akshat Parikh', uid='akshatP', tokens=40),
-            Player(name='Josh Williams', uid='joshW', tokens=38),
-            Player(name='John Mortensen', uid='johnM', tokens=35)
+            Player(name='Josh Williams', uid='joshW', tokens=1),
+            Player(name='John Mortensen', uid='johnM', tokens=1)
         ]
 
         """Builds sample user/note(s) data"""
