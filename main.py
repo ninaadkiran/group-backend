@@ -13,9 +13,11 @@ from __init__ import app, db, cors  # Definitions initialization
 from api.user import user_api # Blueprint import api definition
 from api.chat import chat_api
 from api.player import player_api
+from api.friend import friend_api
 # database migrations
 from model.users import initUsers
 from model.players import initPlayers
+from model.friends import initFriends
 
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
@@ -28,6 +30,7 @@ db.init_app(app)
 app.register_blueprint(user_api) # register api routes
 app.register_blueprint(chat_api)
 app.register_blueprint(player_api)
+app.register_blueprint(friend_api)
 app.register_blueprint(app_projects) # register app pages
 
 @app.errorhandler(404)  # catch for URL not found
@@ -44,6 +47,10 @@ def index():
 def options():
     return '', 204
 
+@app.route('/api/friends', methods=['OPTIONS'])
+def options2():
+    return '', 204
+
 @app.route('/table/')  # connects /stub/ URL to stub() function
 def table():
     return render_template("table.html")
@@ -58,11 +65,13 @@ def before_request():
 # Create an AppGroup for custom commands
 custom_cli = AppGroup('custom', help='Custom commands')
 
+
 # Define a command to generate data
 @custom_cli.command('generate_data')
 def generate_data():
     initUsers()
     initPlayers()
+    initFriends()
 
 # Register the custom command group with the Flask application
 app.cli.add_command(custom_cli)
