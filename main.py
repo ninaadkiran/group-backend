@@ -11,6 +11,7 @@ from __init__ import app, db, cors  # Definitions initialization
 
 # setup APIs
 from api.user import user_api # Blueprint import api definition
+from api.chat import chat_api
 from api.player import player_api
 # database migrations
 from model.users import initUsers
@@ -25,6 +26,7 @@ db.init_app(app)
 
 # register URIs
 app.register_blueprint(user_api) # register api routes
+app.register_blueprint(chat_api)
 app.register_blueprint(player_api)
 app.register_blueprint(app_projects) # register app pages
 
@@ -50,7 +52,7 @@ def table():
 def before_request():
     # Check if the request came from a specific origin
     allowed_origin = request.headers.get('Origin')
-    if allowed_origin in ['http://localhost:4700', 'http://127.0.0.1:4700','http://localhost:4200', 'http://127.0.0.1:4200', "https://rayyandarugar.github.io"]:
+    if allowed_origin in ['http://localhost:4700', 'http://127.0.0.1:4700', "https://ninaadkiran.github.io"]:
         cors._origins = allowed_origin
 
 # Create an AppGroup for custom commands
@@ -68,4 +70,4 @@ app.cli.add_command(custom_cli)
 # this runs the application on the development server
 if __name__ == "__main__":
     # change name for testing
-    app.run(debug=True, host="0.0.0.0", port="8197")
+    app.run(debug=True, host="0.0.0.0", port="8918")
